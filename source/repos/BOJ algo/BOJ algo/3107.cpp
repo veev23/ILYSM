@@ -35,7 +35,7 @@ int main() {
 		if (i == remember && count > 0) {
 			for (int j = 0; j < count; j++) {
 				cout << "0000";
-				if (i == 8 - count && j == count - 1) break;
+				if (i == 8 - count) break; 
 				cout << ':';
 			}
 		}
@@ -45,5 +45,5 @@ int main() {
 			cout << ':';
 	}
 	cout << '\n';
-	return 0;
+	return 0;//마지막에 ::가 와서 0000:0000으로 마무리 하는 경우는 없음.
 }
