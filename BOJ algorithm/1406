@@ -1,0 +1,66 @@
+#include <iostream>
+#include <string>
+using namespace std;
+struct Node {
+	char data; Node* prev; Node* next;
+};
+Node* head = NULL;
+Node* headBefore = new Node{ '\0' };//dummyNode
+Node* cur = NULL;
+void P(char x) {
+	if (!head) {
+		head = new Node{ x };
+		cur = head;
+		headBefore->next = head;
+		head->prev = headBefore;
+	}
+	else {
+		Node* n = cur->next;
+		cur->next = new Node{ x };
+		if (cur == headBefore) {
+			head = cur->next;
+		}
+		cur->next->next = n;
+		if(n) n->prev = cur->next;
+		cur->next->prev = cur;
+		cur = cur->next;
+		
+	}
+}
+void L() {
+	if (cur && cur->prev)cur = cur->prev;
+}
+void D() {
+	if (cur && cur->next) cur = cur->next;
+}
+void B() {
+	if (cur && cur->prev) {
+		Node* tmp = cur;
+		tmp->prev->next = tmp->next;
+		if(tmp->next)tmp->next->prev = tmp->prev;
+		cur = tmp->prev;
+		if (cur == headBefore) head = cur->next;
+		delete tmp;
+	}
+}
+int main() {
+	ios::sync_with_stdio(false);
+	cin.tie(NULL);
+	int n; string order;
+	cin >> order;
+	for (int i = 0; i < order.length(); i++) P(order[i]);
+	cin >> n;
+	while (n--) {
+		cin >> order;
+		if (order == "P") {
+			cin >> order; P(order[0]);
+		}
+		else if (order == "L")L();
+		else if (order == "D")D();
+		else B();
+	}
+	while (head) {
+		cout << head->data;
+		head = head->next;
+	}
+}
